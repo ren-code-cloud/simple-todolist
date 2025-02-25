@@ -1,20 +1,21 @@
+import axios from "axios";
+
+const clientURL = import.meta.env.VITE_APP_BASE_URL;
+const api = axios.create({
+  baseURL: clientURL || "http://localhost:8080/api",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 export const createTask = async (task: string, date: Date) => {
   try {
-    const response = await fetch(
-      "https://todo-api-d6hm.onrender.com/api/create-task",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ task, date }),
-        credentials: "include",
-      }
-    );
+    const response = await api.post("/create-task", { task, date });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Task created successfully:", data);
+    if (response.status === 201) {
+      const data = response.data;
+      return data;
     } else {
       console.error("Failed to create task:", response.statusText);
     }
@@ -25,75 +26,46 @@ export const createTask = async (task: string, date: Date) => {
 
 export const updateTask = async (task: string, date: Date, id: string) => {
   try {
-    const response = await fetch(
-      `https://todo-api-d6hm.onrender.com/api/update-task/${id}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ task, date }),
-        credentials: "include",
-      }
-    );
+    const response = await api.put(`/update-task/${id}`, { task, date });
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Task created successfully:", data);
+    if (response.status === 200) {
+      const data = response.data;
+      return data;
     } else {
-      console.error("Failed to create task:", response.statusText);
+      console.error("Failed to update task:", response.statusText);
     }
   } catch (error) {
-    console.error("Error occurred while creating task:", error);
+    console.error("Error occurred while updating task:", error);
   }
 };
 
 export const getAllTask = async () => {
   try {
-    const response = await fetch(
-      `https://todo-api-d6hm.onrender.com/api/get-task`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
+    const response = await api.get("/get-task");
 
-        credentials: "include",
-      }
-    );
+    if (response.status === 200) {
+      const data = response.data;
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Task created successfully:", data);
       return data;
     } else {
-      console.error("Failed to create task:", response.statusText);
+      console.error("Failed to fetch tasks:", response.statusText);
     }
   } catch (error) {
-    console.error("Error occurred while creating task:", error);
+    console.error("Error occurred while fetching tasks:", error);
   }
 };
 
 export const deleteTask = async (id: string) => {
   try {
-    const response = await fetch(
-      `https://todo-api-d6hm.onrender.com/api/delete-task/${id}`,
-      {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-      }
-    );
+    const response = await api.delete(`/delete-task/${id}`);
 
-    if (response.ok) {
-      const data = await response.json();
-      console.log("Task created successfully:", data);
+    if (response.status === 200) {
+      const data = response.data;
+      return data;
     } else {
-      console.error("Failed to create task:", response.statusText);
+      console.error("Failed to delete task:", response.statusText);
     }
   } catch (error) {
-    console.error("Error occurred while creating task:", error);
+    console.error("Error occurred while deleting task:", error);
   }
 };

@@ -123,9 +123,15 @@ const TodoPage: React.FC<TodoAppProps> = () => {
                       key={index}
                       className="flex justify-between items-center p-2 border-b"
                     >
-                      {item.task}
-                      <span>{new Date(item.date).toLocaleString()}</span>
-                      <div>
+                      <div className="w-full text-left  flex justify-between items-center">
+                        <span className="w-full">{item.task}</span>
+                        <span className=" w-full">
+                          {new Date(item.date).toLocaleDateString("en-PH", {
+                            timeZone: "Asia/Manila",
+                          })}
+                        </span>
+                      </div>
+                      <div className="flex ">
                         <Button
                           onClick={() =>
                             handleEditTask(item.task, item.date, item._id)
