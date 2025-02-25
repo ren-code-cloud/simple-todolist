@@ -21,9 +21,9 @@ mongoose
     console.error("Error connecting to MongoDB:", err);
     process.exit(1);
   });
-
+//process.env.URL
 const corsOptions = {
-  origin: process.env.URL,
+  origin: process.env.URL || "http://localhost:5173",
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "HEAD"],
   allowedHeaders: "Authorization, Content-Type",
   credentials: true,
